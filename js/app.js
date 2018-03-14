@@ -20,6 +20,8 @@ function getWeather(currentLat, currentLong) {
     var weatherText = currentWeather.weather[0].main;
     var weatherIcon = currentWeather.weather[0].icon;
     var currentTemp = currentWeather.main.temp;
+    var tempMax = currentWeather.main.temp_max;
+    var tempMin = currentWeather.main.temp_min;
 
     
     // Show current location on webpage
@@ -31,6 +33,8 @@ function getWeather(currentLat, currentLong) {
 
     // Show temperatures on webpage
     $(".tempSection").html(currentTemp);
+    $(".minTemp").html(tempMin);
+    $(".maxTemp").html(tempMax);
 
     console.log(currentWeather);
   }
