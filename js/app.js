@@ -3,9 +3,6 @@ if (navigator.geolocation) {
     var currentLatitude = position.coords.latitude;
     var currentLongitude = position.coords.longitude;
 
-    $("#latitude").html("latitude: " + currentLatitude);
-    $("#longitude").html("longitude: " + currentLongitude);
-
     getWeather(currentLatitude, currentLongitude);
   });
 }
@@ -20,15 +17,20 @@ function getWeather(currentLat, currentLong) {
     var currentWeather = request.response;
 
     var currentLocation = currentWeather.name + ", " + currentWeather.sys.country;
+    var weatherText = currentWeather.weather[0].main;
     var weatherIcon = currentWeather.weather[0].icon;
+    var currentTemp = currentWeather.main.temp;
 
     
     // Show current location on webpage
     $(".locationSection").html(currentLocation);
 
-    // Show current weather icon in webpage
-    $(".weatherSection").attr('src', weatherIcon);
+    // Show current weather and icon in webpage
+    $(".weatherSection").html(weatherText);
+    $(".weatherImage").attr('src', weatherIcon);
 
+    // Show temperatures on webpage
+    $(".tempSection").html(currentTemp);
 
     console.log(currentWeather);
   }
