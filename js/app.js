@@ -20,9 +20,15 @@ function getWeather(currentLat, currentLong) {
     var currentWeather = request.response;
 
     var currentLocation = currentWeather.name + ", " + currentWeather.sys.country;
+    var weatherIcon = currentWeather.weather[0].icon;
+
     
     // Show current location on webpage
     $(".locationSection").html(currentLocation);
+
+    // Show current weather icon in webpage
+    $(".weatherSection").attr('src', weatherIcon);
+
 
     console.log(currentWeather);
   }
