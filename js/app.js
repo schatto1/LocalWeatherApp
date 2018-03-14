@@ -1,4 +1,10 @@
-const debug = true;
+const debug = false;
+var currentTempCelsius = true;
+var currentTemp = 0;
+var tempMax = 0;
+var tempMin = 0;
+var currentLocation = "Unknown";
+var weatherText = "Unknown"
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(function(position) {
@@ -24,13 +30,12 @@ function getWeather(currentLat, currentLong) {
   request.onload = function() {
     var currentWeather = request.response;
 
-    var currentLocation = currentWeather.name + ", " + currentWeather.sys.country;
-    var weatherText = currentWeather.weather[0].main;
+    currentLocation = currentWeather.name + ", " + currentWeather.sys.country;
+    weatherText = currentWeather.weather[0].main;
     var weatherIcon = currentWeather.weather[0].icon;
-    var currentTemp = Math.round(currentWeather.main.temp * 10) / 10;
-    var currentTempString = currentTemp + ' &#8451;'
-    var tempMax = currentWeather.main.temp_max;
-    var tempMin = currentWeather.main.temp_min;
+    currentTemp = Math.round(currentWeather.main.temp * 10) / 10;
+    tempMax = currentWeather.main.temp_max;
+    tempMin = currentWeather.main.temp_min;
 
     //Change background image depending on weather
     switch (weatherText) {
@@ -60,7 +65,8 @@ function getWeather(currentLat, currentLong) {
     $(".weatherImage").attr('src', weatherIcon);
 
     // Show temperatures on webpage
-    $(".tempSection").html(currentTempString);
+    $(".tempSection").html(currentTemp);
+    $(".weatherMode").html("&#8451;")
     $(".minTemp").html(tempMin);
     $(".maxTemp").html(tempMax);
 
@@ -71,3 +77,49 @@ function getWeather(currentLat, currentLong) {
     check(currentWeather.main.temp);
   }
 }
+
+function convertTemp(currentTemp) {
+  if (currentTempCelsius) {
+    // Convert temperature to Fahrenheit and return
+    return Math.round((currentTemp * (9 / 5) + 32)*10) / 10;
+  } else {
+    // Convert temperature to Celsius and return
+    return Math.round(((currentTemp - 32) * (5 / 9))*10) / 10;
+  }
+}
+
+function switchTempMode() {
+  // Convert temperature values
+  currentTemp = convertTemp(currentTemp);
+  tempMax = convertTemp(tempMax);
+  tempMin = convertTemp(tempMin);
+
+  // Change temperature on display
+  $(".tempSection").html(currentTemp);
+  $(".minTemp").html(tempMin);
+  $(".maxTemp").html(tempMax);
+
+  // Choose which symbol to use
+  if (currentTempCelsius) {
+    // Converted to Fahrenheit, so use F symbol
+    $(".weatherMode").html("&#8457;");
+    var weatherModeString = "F";
+  } else {
+    $(".weatherMode").html("&#8451;");
+    var weatherModeString = "C";
+  }
+
+  //Make sure system knows conversion occured
+  currentTempCelsius = !currentTempCelsius;
+
+  $(".tempAnimation").fadeIn('slow');
+  $("#tweetWeather").attr('href', 'https://twitter.com/intent/tweet?hashtags=weather,freeCodeCamp&related=freeCodeCamp&text=The current weather in ' + currentLocation + ' is ' + weatherText + ', at ' + currentTemp + weatherModeString);
+}
+
+$(document).ready(function() {
+  $("#changeMode").on("click", function() {
+    $(".tempAnimation").fadeOut('slow', function() {
+      switchTempMode();
+    });
+  });
+});

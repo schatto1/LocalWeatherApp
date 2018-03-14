@@ -20,8 +20,10 @@
 <div class="title">
   <h2 class="locationSection"></h2>
   <h3><span class="weatherSection"></span>&nbsp;<img class="weatherImage" src=""></h3>
-  <h3 class="tempSection"></h3>
-  <h6>Min: <span class="minTemp"></span>&nbsp;&nbsp;Max: <span class="maxTemp"></span></h6>
+  <div class="tempAnimation">
+    <h3><span class="tempSection"></span> <span class="weatherMode" id="changeMode"></span></h3>
+    <h6>Min: <span class="minTemp"></span>&nbsp;&nbsp;Max: <span class="maxTemp"></span></h6>
+  </div>
   <hr>
   <!-- This button will let user tweet current weather -->
   <a href="#" id="tweetWeather" target="_blank">
