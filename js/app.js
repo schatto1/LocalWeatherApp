@@ -57,8 +57,5 @@ function getWeather(currentLat, currentLong) {
 
     // Allow user to tweet weather
     $("#tweetWeather").attr('href', 'https://twitter.com/intent/tweet?hashtags=weather,freeCodeCamp&related=freeCodeCamp&text=The current weather in ' + currentLocation + ' is ' + weatherText + ', at ' + currentTemp + 'C');
-
-    console.log(currentWeather);
-    console.log(currentWeather.main.temp);
   }
 }
