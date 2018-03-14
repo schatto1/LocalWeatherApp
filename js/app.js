@@ -1,3 +1,5 @@
+const debug = true;
+
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(function(position) {
     var currentLatitude = position.coords.latitude;
@@ -5,6 +7,12 @@ if (navigator.geolocation) {
 
     getWeather(currentLatitude, currentLongitude);
   });
+}
+
+function check(statement) {
+  if (debug == true) {
+    console.log(statement);
+  }
 }
 
 function getWeather(currentLat, currentLong) {
@@ -19,7 +27,8 @@ function getWeather(currentLat, currentLong) {
     var currentLocation = currentWeather.name + ", " + currentWeather.sys.country;
     var weatherText = currentWeather.weather[0].main;
     var weatherIcon = currentWeather.weather[0].icon;
-    var currentTemp = Math.round(currentWeather.main.temp * 10) / 10 + ' &#8451;';
+    var currentTemp = Math.round(currentWeather.main.temp * 10) / 10;
+    var currentTempString = currentTemp + ' &#8451;'
     var tempMax = currentWeather.main.temp_max;
     var tempMin = currentWeather.main.temp_min;
 
@@ -51,11 +60,14 @@ function getWeather(currentLat, currentLong) {
     $(".weatherImage").attr('src', weatherIcon);
 
     // Show temperatures on webpage
-    $(".tempSection").html(currentTemp);
+    $(".tempSection").html(currentTempString);
     $(".minTemp").html(tempMin);
     $(".maxTemp").html(tempMax);
 
     // Allow user to tweet weather
     $("#tweetWeather").attr('href', 'https://twitter.com/intent/tweet?hashtags=weather,freeCodeCamp&related=freeCodeCamp&text=The current weather in ' + currentLocation + ' is ' + weatherText + ', at ' + currentTemp + 'C');
+
+    check(currentWeather);
+    check(currentWeather.main.temp);
   }
 }
